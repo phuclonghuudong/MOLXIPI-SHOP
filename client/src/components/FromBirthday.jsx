@@ -33,6 +33,9 @@ const FormBirthday = ({ label, labelBold, id, name, value, onChange }) => {
 
   useEffect(() => {
     setListDay(getDayList(select?.year, select?.month));
+  }, [select.year, select.month]);
+
+  useEffect(() => {
     if (Number(select?.day) > listDay?.length) {
       setSelect((pre) => {
         return {
@@ -54,7 +57,7 @@ const FormBirthday = ({ label, labelBold, id, name, value, onChange }) => {
         [select?.year, select?.month, select?.day].filter(Boolean).join("-")
       );
     }
-  }, [select?.day]);
+  }, [select.day, select.month, select.year]);
 
   return (
     <div className="flex flex-row justify-center items-center">

@@ -10,6 +10,7 @@ const {
   resetPasswordController,
   updateResetPasswordController,
   updateUserDetails,
+  refreshTokenController,
 } = require("../controller/UserController");
 const auth = require("../middleware/auth");
 const userRouter = Router();
@@ -24,5 +25,6 @@ userRouter.put("/verify-forgot-password-otp", verifyForgotPasswordOtp);
 userRouter.put("/reset-password", resetPasswordController);
 userRouter.put("/update/update-password", auth, updateResetPasswordController);
 userRouter.put("/update/update-detail-user", auth, updateUserDetails);
+userRouter.post("/refresh-token", refreshTokenController);
 
 module.exports = userRouter;

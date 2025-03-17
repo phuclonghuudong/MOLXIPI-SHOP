@@ -481,6 +481,55 @@ const updateUserDetails = async (request, response) => {
     });
   }
 };
+const refreshTokenController = async (request, response) => {
+  try {
+    const refreshToken =
+      request.cookies.refreshToken ||
+      request?.header?.authorization?.split(" ")[1];
+
+    if (!refreshToken) {
+      return response
+        .status(401)
+        .json({ message: "Invalid token.", error: true, success: false });
+    }
+
+    const verifyToken = await jwt.verify(
+      refreshToken,
+      process.env.SECRET_KEY_REFRESH_TOKEN
+    );
+
+    if (!verifyToken) {
+      return response.status(401).json({
+        message: "Token is expired.",
+        error: true,
+        success: false,
+      });
+    }
+
+    const newAccessToken = await generateAccessToken(verifyToken.id);
+
+    const cookiesOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    };
+
+    response.cookie("accessToken", newAccessToken, cookiesOption);
+
+    return response.json({
+      message: "New access token generated",
+      error: false,
+      success: true,
+      data: { accessToken: newAccessToken },
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
 
 module.exports = {
   registerUserController,
@@ -493,4 +542,5 @@ module.exports = {
   resetPasswordController,
   updateResetPasswordController,
   updateUserDetails,
+  refreshTokenController,
 };

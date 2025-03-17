@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import SummaryApi from "../common/SummaryApi";
 import FormButton from "../components/FormButton";
@@ -10,11 +10,13 @@ import FormBirthday from "../components/FromBirthday";
 import Loading from "../components/Loading";
 import TextBoldNoUppercase from "../components/TextBoldNoUppercase";
 import TextUpperCaseNoBold from "../components/TextUpperCaseNoBold";
+import { setUserDetails } from "../store/userSlice";
 import Axios from "../utils/Axios";
 import AxiosToastError from "../utils/AxiosToastError";
 import fetchUserDetails from "../utils/fetchUserDetails";
 
 const UpdateAccount = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [birthday, setBirthday] = useState("");
@@ -26,7 +28,6 @@ const UpdateAccount = () => {
     gender: "",
     birthday: "",
   });
-  console.log(data);
 
   const handleOnchange = (event) => {
     const { name, value } = event.target;
@@ -64,7 +65,12 @@ const UpdateAccount = () => {
       const { data: responseData } = response;
       if (responseData?.success) {
         toast.success(responseData?.message);
-        fetchUserDetails();
+
+        const responseUser = await fetchUserDetails();
+        const { data: responseUserData } = responseUser;
+        if (responseUserData?.success) {
+          dispatch(setUserDetails(responseUserData?.data));
+        }
       }
       if (responseData?.error) {
         toast?.error(responseData?.message);

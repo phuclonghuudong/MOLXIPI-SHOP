@@ -18,7 +18,7 @@ const FormSelect = ({ label, labelBold, id, name, value, onChange }) => {
           value={value}
           onChange={onChange}
         >
-          <option key={"0"} value="0">
+          <option key={"0"} value="">
             Chọn giới tính
           </option>
           <option key={"male"} value="male">
