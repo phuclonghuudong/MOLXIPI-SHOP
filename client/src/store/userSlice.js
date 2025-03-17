@@ -7,6 +7,9 @@ const initialValue = {
   avatar: "",
   phone: "",
   status: "",
+  address: "",
+  gender: "",
+  birthday: "",
   verify_email: "",
   role: "",
 };
@@ -22,6 +25,9 @@ const userSlice = createSlice({
       state.avatar = action.payload?.avatar;
       state.phone = action.payload?.phone;
       state.status = action.payload?.status;
+      state.address = action.payload?.address;
+      state.birthday = action.payload?.birthday;
+      state.gender = action.payload?.gender;
       state.verify_email = action.payload?.verify_email;
       state.role = action.payload?.role;
     },

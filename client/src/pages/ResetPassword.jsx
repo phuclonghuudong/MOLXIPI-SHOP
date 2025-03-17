@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SummaryApi from "../common/SummaryApi";
 import FormButton from "../components/FormButton";
 import FormInput from "../components/FormInput";
@@ -9,12 +9,27 @@ import Loading from "../components/Loading";
 import Axios from "../utils/Axios";
 import AxiosToastError from "../utils/AxiosToastError";
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState({
     email: "",
+    newPassword: "",
+    confirmNewPassword: "",
   });
+
+  useEffect(() => {
+    if (!location?.state?.data?.success) {
+      navigate("/");
+    }
+
+    if (location?.state?.email) {
+      setData((pre) => {
+        return { ...pre, email: location?.state?.email };
+      });
+    }
+  }, []);
 
   const validateValue = Object.values(data).every((el) => el);
 
@@ -35,14 +50,14 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
       const response = await Axios({
-        ...SummaryApi.forgot_password,
+        ...SummaryApi.reset_password,
         data: data,
       });
 
       const { data: responseData } = response;
       if (responseData?.success) {
         toast.success(responseData?.message);
-        navigate("/thanh-vien/xac-minh-otp", { state: data });
+        navigate("/thanh-vien/dang-nhap", { state: { email: data?.email } });
       }
     } catch (error) {
       AxiosToastError(error);
@@ -53,22 +68,27 @@ const ForgotPassword = () => {
   return (
     <section className="  w-full lg:w-96 rounded lg:mx-auto lg:pt-4 text-sm">
       <div className="bg-white grid gap-3 p-2">
-        <FormTitle title="Quên mật khẩu" />
+        <FormTitle title="Đổi mật khẩu" />
 
         <form onSubmit={handleSubmit} className="grid gap-3">
           <FormInput
-            id={"email"}
-            name={"email"}
-            value={data.email}
+            id={"newPassword"}
+            name={"newPassword"}
+            value={data.newPassword}
             onChange={handleOnchange}
             autoFocus
-            placeholder="Email"
-            type="email"
+            placeholder="Mật khẩu mới của bạn"
+            type="password"
           />
-          <FormButton
-            disabled={loading || !validateValue}
-            title="Lấy lại mật khẩu"
+          <FormInput
+            id={"confirmNewPassword"}
+            name={"confirmNewPassword"}
+            value={data.confirmNewPassword}
+            onChange={handleOnchange}
+            placeholder="Nhập lại mật khẩu"
+            type="password"
           />
+          <FormButton disabled={loading || !validateValue} title="Xác nhận" />
         </form>
         {loading && <Loading />}
 
@@ -84,4 +104,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

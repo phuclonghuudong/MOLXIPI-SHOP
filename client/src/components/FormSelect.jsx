@@ -12,15 +12,21 @@ const FormSelect = ({ label, labelBold, id, name, value, onChange }) => {
       )}
       <div className="flex-[5] h-10">
         <select
-          class="w-full border border-gray-300 h-full p-2 focus:outline-none text-xs"
+          className="w-full border border-gray-300 h-full p-2 focus:outline-none text-xs"
           id={id ? id : ""}
           name={name ? name : ""}
-          value={value ? value : ""}
+          value={value}
           onChange={onChange}
         >
-          <option value="0">Chọn giới tính</option>
-          <option value="1">Nam</option>
-          <option value="2">Nữ</option>
+          <option key={"0"} value="0">
+            Chọn giới tính
+          </option>
+          <option key={"male"} value="male">
+            Nam
+          </option>
+          <option key={"female"} value="female">
+            Nữ
+          </option>
         </select>
       </div>
     </div>

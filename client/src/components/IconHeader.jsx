@@ -10,7 +10,7 @@ import IMG_NONE_CART from "../assets/empty-cart.webp";
 import SummaryApi from "../common/SummaryApi";
 import { logout } from "../store/userSlice";
 import Axios from "../utils/Axios";
-import AxiosToastError from "../utils/AxiosToast";
+import AxiosToastError from "../utils/AxiosToastError";
 import TabLinkHeader from "./TabLinkHeader";
 
 const IconHeader = () => {
@@ -43,6 +43,7 @@ const IconHeader = () => {
   };
 
   const TitleIcon = ({ Id, openTabX, iconTitle: ICON, title, quantity }) => {
+    const checkQuantity = quantity >= 0 ? true : false;
     return (
       <div
         onMouseEnter={() => {
@@ -53,14 +54,14 @@ const IconHeader = () => {
       >
         <div
           className={` p-2 md:border rounded-full hover:text-orange-900 hover:border-orange-900 duration-300 ${
-            quantity ? "relative" : ""
+            checkQuantity ? "relative" : ""
           } ${
             openTab === true && openTabId === Id
               ? "text-orange-900 border-orange-900"
               : "text-orange-600 border-slate-200"
           }`}
         >
-          {quantity && (
+          {checkQuantity && (
             <div
               className={`absolute rounded-full bg-orange-600 text-white text-xs ${
                 Number(quantity) > 9 ? "h-5 w-5" : "h-4 w-4"
@@ -188,14 +189,14 @@ const IconHeader = () => {
               openTabX={true}
               iconTitle={FaCartArrowDown}
               title="GIỎ HÀNG"
-              quantity={2}
+              quantity={Number(0)}
             />
           </div>
-          <div className="block h-full w-full text-xs lg:text-sm ">
+          <div className="block h-full w-full text-xs lg:text-sm">
             {openTab && openTabId === "GH" && (
               <div
                 onMouseLeave={() => setOpenTab(false)}
-                className=" bg-white right-10 shadow-lg border z-10 absolute uppercase w-40 h-40 lg:w-60 items-center justify-center flex"
+                className=" bg-white right-10 shadow-lg border z-10 absolute uppercase w-40 h-40 lg:w-60 items-center justify-center flex p-2s"
               >
                 <Link
                   to={"/gio-hang"}

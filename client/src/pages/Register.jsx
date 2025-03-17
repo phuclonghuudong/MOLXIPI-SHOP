@@ -7,7 +7,7 @@ import FormInput from "../components/FormInput";
 import FormTitle from "../components/FormTitle";
 import Loading from "../components/Loading";
 import Axios from "../utils/Axios";
-import AxiosToastError from "../utils/AxiosToast";
+import AxiosToastError from "../utils/AxiosToastError";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ const Register = () => {
 
       if (responseData?.success) {
         toast.success(responseData?.message);
-        navigate("/thanh-vien/dang-nhap");
+        navigate("/thanh-vien/dang-nhap", { state: { email: data?.email } });
       }
       if (responseData?.error) {
         toast.error(responseData?.message);

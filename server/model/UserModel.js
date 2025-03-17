@@ -17,11 +17,15 @@ const scheme = new mongoose.Schema(
     },
     gender: {
       type: String,
-      required: true,
+      default: "",
     },
     birthday: {
       type: String,
-      required: true,
+      default: "",
+    },
+    address: {
+      type: String,
+      default: "",
     },
     password: {
       required: true,

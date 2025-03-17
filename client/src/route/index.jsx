@@ -8,8 +8,10 @@ import ContactPage from "../pages/ContactPage";
 import ForgotPassword from "../pages/ForgotPassword";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
+import OtpVerification from "../pages/OtpVerification";
 import ProductPage from "../pages/ProductPage";
 import Register from "../pages/Register";
+import ResetPassword from "../pages/ResetPassword";
 import SaleOff from "../pages/SaleOff";
 import UpdateAccount from "../pages/UpdateAccount";
 
@@ -30,10 +32,7 @@ const router = createBrowserRouter([
         path: "/thanh-vien/dang-nhap",
         element: <Login />,
       },
-      {
-        path: "/thanh-vien/quen-mat-khau",
-        element: <ForgotPassword />,
-      },
+
       {
         path: "/lien-he",
         element: <ContactPage />,
@@ -65,6 +64,18 @@ const router = createBrowserRouter([
       {
         path: "/thanh-vien/thong-tin",
         element: <UpdateAccount />,
+      },
+      {
+        path: "/thanh-vien/quen-mat-khau",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/thanh-vien/xac-minh-otp",
+        element: <OtpVerification />,
+      },
+      {
+        path: "/thanh-vien/doi-mat-khau",
+        element: <ResetPassword />,
       },
     ],
   },

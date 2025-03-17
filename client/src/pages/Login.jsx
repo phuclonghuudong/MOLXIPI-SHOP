@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SummaryApi from "../common/SummaryApi";
 import FormButton from "../components/FormButton";
 import FormInput from "../components/FormInput";
@@ -9,11 +9,12 @@ import FormTitle from "../components/FormTitle";
 import Loading from "../components/Loading";
 import { setUserDetails } from "../store/userSlice";
 import Axios from "../utils/Axios";
-import AxiosToastError from "../utils/AxiosToast";
+import AxiosToastError from "../utils/AxiosToastError";
 import fetchUserDetails from "../utils/fetchUserDetails";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
   const dispatch = useDispatch();
   const [data, setData] = useState({
     email: "",
@@ -33,6 +34,16 @@ const Login = () => {
       };
     });
   };
+  useEffect(() => {
+    if (location?.state?.email) {
+      setData((pre) => {
+        return {
+          ...pre,
+          email: location?.state?.email,
+        };
+      });
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
